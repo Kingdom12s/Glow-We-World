@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Glow We World - Registration</title>
   <style>
     body {
@@ -20,187 +20,139 @@
       font-size: 1.8rem;
       font-weight: 600;
     }
-    form {
-      max-width: 700px;
+    .container {
+      max-width: 900px;
       background: white;
       margin: 40px auto;
       padding: 30px;
       border-radius: 15px;
       box-shadow: 0 6px 20px rgba(0,0,0,0.1);
     }
-    h2 {
-      text-align: center;
-      color: #047857;
-    }
-    label {
-      display: block;
-      margin-top: 15px;
-      font-weight: 500;
-    }
+    label { font-weight: 600; display: block; margin-top: 12px; }
     input, select, textarea {
       width: 100%;
       padding: 10px;
-      margin-top: 6px;
-      border: 1px solid #ccc;
       border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-top: 6px;
       font-size: 1rem;
     }
-    .checkbox {
-      display: flex;
-      align-items: center;
-      margin-top: 15px;
-    }
-    .checkbox input {
-      margin-right: 8px;
-      transform: scale(1.2);
-    }
-    .declaration {
-      background: #f0fdf4;
-      padding: 15px;
-      border-left: 5px solid #10b981;
-      border-radius: 12px;
-      margin-top: 25px;
-    }
-    .declaration input {
-      margin-top: 10px;
-      border: 1px solid #a7f3d0;
-      border-radius: 6px;
-      padding: 8px;
-      width: 100%;
-    }
-    button {
-      display: block;
-      width: 100%;
+    .btn {
       background: #10b981;
       color: white;
-      padding: 12px;
+      padding: 10px 20px;
       border: none;
       border-radius: 8px;
-      font-size: 1.1rem;
-      margin-top: 25px;
+      margin-top: 20px;
       cursor: pointer;
       transition: background 0.3s;
+      font-size: 1rem;
     }
-    button:hover {
-      background: #059669;
+    .btn:hover { background: #059669; }
+    .declaration-box {
+      border: 1px solid #a7f3d0;
+      background: #f0fdf4;
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 20px;
+    }
+    .declaration-box label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 500;
     }
   </style>
 </head>
 <body>
 
-<header>🌿 Glow We World Registration 🌿</header>
+<header>🌿 Glow We World - Registration 🌿</header>
 
-<form id="registrationForm" action="https://formspree.io/f/xwprzzql" method="POST">
-  <h2>Member Registration Form</h2>
+<div class="container">
+  <form id="registrationForm">
+    <h2>Member Registration</h2>
 
-  <label>First Name</label>
-  <input type="text" name="first_name" required>
+    <label>First Name:</label>
+    <input type="text" id="first_name" name="first_name" required>
 
-  <label>Middle Name</label>
-  <input type="text" name="middle_name">
+    <label>Middle Name:</label>
+    <input type="text" id="middle_name" name="middle_name">
 
-  <label>Last Name</label>
-  <input type="text" name="last_name" required>
+    <label>Last Name:</label>
+    <input type="text" id="last_name" name="last_name" required>
 
-  <label>Phone Number</label>
-  <input type="tel" name="phone" required>
+    <label>Email:</label>
+    <input type="email" id="email" name="email" required>
 
-  <label>WhatsApp Number</label>
-  <input type="tel" name="whatsapp" required>
+    <label>Phone Number:</label>
+    <input type="tel" id="phone" name="phone" required>
 
-  <label>Email Address</label>
-  <input type="email" name="email" required>
+    <label>WhatsApp Number:</label>
+    <input type="tel" id="whatsapp" name="whatsapp">
 
-  <label>Residential Address</label>
-  <textarea name="address" rows="2" required></textarea>
+    <label>Address:</label>
+    <textarea id="address" name="address" required></textarea>
 
-  <label>NIN (National Identification Number)</label>
-  <input type="text" id="nin" name="nin" maxlength="11" minlength="8" inputmode="numeric" placeholder="Enter NIN (8–11 digits)" required>
+    <label>NIN:</label>
+    <!-- ✅ Fixed NIN input -->
+    <input type="text" id="nin" name="nin" maxlength="11" minlength="8" inputmode="numeric" placeholder="Enter NIN (8–11 digits)" required>
 
-  <label>Select Package</label>
-  <select name="package" required>
-    <option value="">Select Package</option>
-    <option>Daily Savings (₦200)</option>
-    <option>Daily Savings (₦500)</option>
-    <option>Daily Savings (₦1,000)</option>
-    <option>Daily Ajor (₦250)</option>
-    <option>Daily Ajor (₦700)</option>
-    <option>Daily Ajor (₦1,100)</option>
-    <option>Ajor Contribution (₦6,000)</option>
-  </select>
+    <label>Select Package:</label>
+    <select id="package" name="package" required>
+      <option value="">Select Package</option>
+      <option>Daily Savings (₦200)</option>
+      <option>Daily Savings (₦500)</option>
+      <option>Daily Savings (₦1,000)</option>
+      <option>Daily Ajor (₦250)</option>
+      <option>Daily Ajor (₦700)</option>
+      <option>Daily Ajor (₦1,100)</option>
+      <option>Ajor Contribution (₦6,000)</option>
+    </select>
 
-  <div class="checkbox">
-    <input type="checkbox" id="terms" required>
-    <label for="terms">I confirm that the above information provided is correct and I agree to the terms and conditions.</label>
-  </div>
+    <div class="declaration-box">
+      <label>
+        <input type="checkbox" id="declaration" required>
+        I hereby declare that all information provided above is true and correct.
+      </label>
+    </div>
 
-  <div class="declaration">
-    <p><strong>Declaration:</strong> I hereby declare that the information provided above is true and accurate to the best of my knowledge.</p>
-    <label>Enter Full Name for Declaration</label>
-    <input type="text" name="declaration_name" placeholder="Type your full name here" required>
-  </div>
-
-  <button type="submit">Proceed to Registration</button>
-</form>
+    <button type="submit" class="btn">Submit</button>
+  </form>
+</div>
 
 <script>
-document.addEventListener("DOMContentLoaded", () => {
-  const form = document.querySelector("#registrationForm");
-  const submitBtn = form.querySelector("button[type='submit']");
+const form = document.getElementById("registrationForm");
 
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    submitBtn.disabled = true;
-    submitBtn.textContent = "Submitting...";
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
 
-    const formData = new FormData(form);
-    const data = Object.fromEntries(formData.entries());
+  const formData = new FormData(form);
+  const data = Object.fromEntries(formData.entries());
 
-    // Save to localStorage for dashboard
-    localStorage.setItem("glowUser", JSON.stringify({
-      first_name: data.first_name,
-      middle_name: data.middle_name,
-      last_name: data.last_name,
-      phone: data.phone,
-      email: data.email,
-      whatsapp: data.whatsapp,
-      address: data.address,
-      nin: data.nin,
-    }));
+  localStorage.setItem("glowUser", JSON.stringify(data));
+  localStorage.setItem("glowPackages", JSON.stringify([{ name: data.package, paid: false, date: new Date().toISOString() }]));
 
-    localStorage.setItem("glowPackages", JSON.stringify([{ name: data.package, paid: false }]));
-
-    // Send to Formspree
-    fetch(form.action, { method: "POST", body: formData });
-
-    // Send to Google Sheet
-    const googleScriptURL = "https://script.google.com/macros/s/AKfycbzNoS-D9VQxvWHxkV22nDz5YunOCxK12MjskyFOB3r-U7pPbJJBB_2RyARp6y1zhQN8/exec";
-    try {
-      await fetch(googleScriptURL, {
-        method: "POST",
-        body: new URLSearchParams(data),
-      });
-
-      // Success toast
-      const toast = document.createElement("div");
-      toast.textContent = "Registration successful! Redirecting...";
-      toast.style.cssText = "position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#047857;color:white;padding:12px 20px;border-radius:8px;box-shadow:0 4px 10px rgba(0,0,0,0.2);z-index:1000;font-size:1rem;";
-      document.body.appendChild(toast);
-
-      setTimeout(() => {
-        toast.remove();
-        window.location.href = "stdashboard.html";
-      }, 1500);
-
-    } catch (err) {
-      alert("Error sending to Google Sheet. Please try again.");
-      submitBtn.disabled = false;
-      submitBtn.textContent = "Proceed to Registration";
-    }
+  // ✅ Send to Formspree
+  fetch("https://formspree.io/f/maygawyn", {
+    method: "POST",
+    headers: { "Accept": "application/json" },
+    body: new FormData(form),
   });
+
+  // ✅ Send to Google Sheet
+  const googleScriptURL = "https://script.google.com/macros/s/AKfycbzNoS-D9VQxvWHxkV22nDz5YunOCxK12MjskyFOB3r-U7pPbJJBB_2RyARp6y1zhQN8/exec";
+  fetch(googleScriptURL, {
+    method: "POST",
+    mode: "no-cors",
+    body: JSON.stringify(data)
+  });
+
+  // ✅ Auto redirect after short loading delay
+  setTimeout(() => {
+    window.location.href = "stdashboard.html";
+  }, 1500);
 });
 </script>
 
 </body>
 </html>
-
