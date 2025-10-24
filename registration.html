@@ -115,7 +115,7 @@
   <textarea name="address" rows="2" required></textarea>
 
   <label>NIN (National Identification Number)</label>
-  <input type="text" name="nin" maxlength="11" pattern="\\d{11}" placeholder="Enter 11-digit NIN" required>
+  <input type="text" id="nin" name="nin" maxlength="11" minlength="8" inputmode="numeric" placeholder="Enter NIN (8–11 digits)" required>
 
   <label>Select Package</label>
   <select name="package" required>
@@ -203,3 +203,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
 </body>
 </html>
+
