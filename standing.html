@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome – Glow We World</title>
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background: #ecfdf5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      color: #064e3b;
+      margin: 0;
+    }
+    .box {
+      background: white;
+      padding: 2rem 3rem;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    h1 { color: #059669; }
+    p { color: #047857; font-size: 1.1rem; }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h1 id="welcomeName">Welcome!</h1>
+    <p>Thank you for joining the Glow We World Project.</p>
+    <p>You’ll be redirected to your dashboard shortly...</p>
+  </div>
+
+  <script>
+    const user = JSON.parse(localStorage.getItem("registeredUser")) || {};
+    document.getElementById("welcomeName").textContent = `Welcome, ${user.firstName || ""} ${user.lastName || ""}!`;
+
+    setTimeout(() => {
+      window.location.href = "stdashboard.html";
+    }, 3000);
+  </script>
+</body>
+</html>

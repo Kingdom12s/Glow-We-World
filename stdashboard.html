@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Glow We World - Package Standing</title>
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, #d1fae5, #10b981);
+      margin: 0;
+      padding: 0;
+      color: #064e3b;
+    }
+    header {
+      background: #047857;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      font-size: 1.8rem;
+      font-weight: 600;
+    }
+    .container {
+      max-width: 900px;
+      background: white;
+      margin: 40px auto;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    }
+    h2 { color: #047857; text-align: center; margin: 0 0 10px 0; }
+    .info-box {
+      background: #ecfdf5;
+      border-left: 5px solid #10b981;
+      padding: 20px;
+      border-radius: 12px;
+      margin-top: 20px;
+    }
+    p { margin: 8px 0; }
+    .btn {
+      display: inline-block;
+      background: #10b981;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      text-decoration: none;
+      margin-top: 20px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .btn:hover { background: #059669; }
+    .package-list {
+      background: #f0fdf4;
+      border: 1px solid #a7f3d0;
+      padding: 12px;
+      border-radius: 8px;
+      margin-top: 12px;
+      max-height: 260px;
+      overflow: auto;
+    }
+    .package-item { padding: 8px 6px; border-bottom: 1px dashed #d1fae5; }
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 10;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+    }
+    .modal-content {
+      background: white;
+      margin: 100px auto;
+      padding: 20px 30px;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 420px;
+      text-align: center;
+    }
+    select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-top: 10px;
+      font-size: 1rem;
+    }
+    .small { font-size: 0.95rem; color:#063; }
+    .timer { font-weight: 600; margin-top: 10px; }
+    .timer.negative { color: red; }
+  </style>
+</head>
+<body>
+
+<header>🌿 Glow We World - Package Standing 🌿</header>
+
+<div class="container">
+  <h2 id="userName">Welcome</h2>
+
+  <div class="info-box">
+    <p><strong>Email:</strong> <span id="userEmail"></span></p>
+    <p><strong>Phone:</strong> <span id="userPhone"></span></p>
+    <p><strong>WhatsApp:</strong> <span id="userWhatsapp"></span></p>
+    <p><strong>Address:</strong> <span id="userAddress"></span></p>
+  </div>
+
+  <div class="info-box">
+    <h3>📦 Package Standing</h3>
+    <p><strong>Total Packages Taken:</strong> <span id="totalPackages">0</span></p>
+    <p><strong>Current Running Packages:</strong> <span id="runningPackage">-</span></p>
+    <p><strong>Next Payment Date:</strong> <span id="nextPaymentDate">-</span></p>
+    <p><strong>Total Amount Due (₦):</strong> <span id="amountDue">0</span></p>
+    <p class="timer" id="paymentTimer">Payment Window: 08:00 - 21:00</p>
+
+    <div class="package-list" id="packageList" aria-live="polite" role="region"></div>
+
+    <button class="btn" id="newPackageBtn">➕ Get Another Package</button>
+  </div>
+</div>
+
+<!-- Modal for adding new package -->
+<div id="packageModal" class="modal" aria-hidden="true">
+  <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <h3 id="modalTitle">Select New Package</h3>
+    <select id="newPackageSelect" aria-label="Select new package">
+      <option value="">Select Package</option>
+      <option>Daily Savings (₦200)</option>
+      <option>Daily Savings (₦500)</option>
+      <option>Daily Savings (₦1,000)</option>
+      <option>Daily Ajor (₦250)</option>
+      <option>Daily Ajor (₦700)</option>
+      <option>Daily Ajor (₦1,100)</option>
+      <option>Ajor Contribution (₦6,000)</option>
+    </select>
+    <div style="margin-top:18px;">
+      <button class="btn" id="addPackageBtn">Add Package</button>
+      <button class="btn" id="closeModalBtn" style="background:#6b7280; margin-left:8px">Cancel</button>
+    </div>
+    <p class="small" style="margin-top:10px">Note: New package joins your active packages immediately.</p>
+  </div>
+</div>
+
+<script>
+function parseAmount(pkgString) {
+  if (!pkgString) return 0;
+  const m = pkgString.match(/₦\s*([\d,]+)/);
+  if (!m) return 0;
+  return parseInt(m[1].replace(/,/g,''), 10) || 0;
+}
+
+// Get user
+const user = JSON.parse(localStorage.getItem("glowUser"));
+if(!user) window.location.href="index.html";
+
+const fullName = [user.first_name, user.middle_name, user.last_name].filter(Boolean).join(" ");
+document.getElementById("userName").textContent = "Welcome, " + fullName;
+document.getElementById("userEmail").textContent = user.email || "-";
+document.getElementById("userPhone").textContent = user.phone || "-";
+document.getElementById("userWhatsapp").textContent = user.whatsapp || "-";
+document.getElementById("userAddress").textContent = user.address || "-";
+
+// Initialize packages
+let packages = JSON.parse(localStorage.getItem("glowPackages")) || [];
+packages = packages.map(p => typeof p === "string" ? {name:p, paid:false, date:new Date().toISOString()} : p);
+
+// Update dashboard UI
+function updatePackageInfo(pkgs){
+  document.getElementById("totalPackages").textContent = pkgs.length;
+  const runningPkgs = pkgs.filter(p=>p.paid).map(p=>p.name);
+  document.getElementById("runningPackage").textContent = runningPkgs.length ? runningPkgs.join(" · ") : "No active packages";
+  const totalAmount = pkgs.filter(p=>!p.paid).reduce((acc,p)=>acc+parseAmount(p.name),0);
+  document.getElementById("amountDue").textContent = totalAmount.toLocaleString();
+
+  const today = new Date();
+  let next = new Date(today); next.setDate(today.getDate()+1);
+  while(next.getDay()===0||next.getDay()===6) next.setDate(next.getDate()+1);
+  document.getElementById("nextPaymentDate").textContent = next.toLocaleDateString();
+
+  const listEl = document.getElementById("packageList");
+  if(!pkgs.length){ listEl.innerHTML="<p>No packages taken yet.</p>"; }
+  else{
+    listEl.innerHTML = `<div><strong>All Packages</strong></div>` + pkgs.map((p,i)=>{
+      const amt = parseAmount(p.name);
+      const paidText = p.paid ? "✅ Paid" : "❌ Pending";
+      const payBtn = !p.paid ? `<button class="btn" style="margin-left:10px;font-size:0.9rem;" onclick="payPackage(${i})">Click to Pay</button>` : "";
+      return `<div class="package-item"><strong>${i+1}.</strong> ${p.name} — ₦${amt.toLocaleString()} — <span>${paidText}</span>${payBtn}</div>`;
+    }).join("");
+  }
+  localStorage.setItem("glowPackages", JSON.stringify(pkgs));
+}
+
+// Pay package function
+function payPackage(index){
+  packages[index].paid = true;
+  updatePackageInfo(packages);
+
+  // Send package payment info to Google Sheet
+  const googleScriptURL = "https://script.google.com/macros/s/AKfycbxS4LxNOXQW6qu3lRaRYHGGfj3KkqYn4FF4o5KxVb4LOJMO50WIDpwGSbMWsaLZS1E/exec";
+  fetch(googleScriptURL, {
+    method:"POST",
+    mode:"no-cors",
+    body: JSON.stringify({ email:user.email, package:packages[index].name, paid:true, date:new Date().toLocaleString() })
+  });
+}
+
+// Modal controls
+const modal = document.getElementById("packageModal");
+document.getElementById("newPackageBtn").onclick = () => { document.getElementById("newPackageSelect").value=""; modal.style.display="block"; modal.setAttribute("aria-hidden","false"); };
+document.getElementById("closeModalBtn").onclick = () => { modal.style.display="none"; modal.setAttribute("aria-hidden","true"); };
+
+document.getElementById("addPackageBtn").onclick = ()=>{
+  const newPkgName = document.getElementById("newPackageSelect").value;
+  if(!newPkgName){ alert("Please select a package."); return; }
+  const newPkg = {name:newPkgName, paid:false, date:new Date().toISOString()};
+  packages.push(newPkg);
+  localStorage.setItem("glowPackages", JSON.stringify(packages));
+  updatePackageInfo(packages);
+
+  // Send new package info to Google Sheet
+  const googleScriptURL = "https://script.google.com/macros/s/AKfycbxS4LxNOXQW6qu3lRaRYHGGfj3KkqYn4FF4o5KxVb4LOJMO50WIDpwGSbMWsaLZS1E/exec";
+  fetch(googleScriptURL, {method:"POST", mode:"no-cors", body:JSON.stringify({email:user.email, package:newPkgName, paid:false, date:new Date().toLocaleString()})});
+
+  modal.style.display="none";
+  modal.setAttribute("aria-hidden","true");
+};
+
+window.onclick = e=>{ if(e.target===modal){ modal.style.display="none"; modal.setAttribute("aria-hidden","true"); } };
+
+// Payment timer
+function updateTimer(){
+  const now = new Date();
+  const start = new Date(); start.setHours(8,0,0,0);
+  const end = new Date(); end.setHours(21,0,0,0);
+  let diffSec = Math.floor((end-now)/1000);
+  const timerEl = document.getElementById("paymentTimer");
+  if(diffSec>=0){
+    const h = Math.floor(diffSec/3600);
+    const m = Math.floor((diffSec%3600)/60);
+    const s = diffSec%60;
+    timerEl.textContent = `Payment Window Closes In: ${h}h ${m}m ${s}s`;
+    timerEl.classList.remove("negative");
+  }else{
+    diffSec=Math.abs(diffSec);
+    const h=Math.floor(diffSec/3600);
+    const m=Math.floor((diffSec%3600)/60);
+    const s=diffSec%60;
+    timerEl.textContent=`Payment Window Passed: -${h}h ${m}m ${s}s`;
+    timerEl.classList.add("negative");
+  }
+}
+setInterval(updateTimer,1000);
+updateTimer();
+
+// Initial UI render
+updatePackageInfo(packages);
+</script>
+</body>
+</html>

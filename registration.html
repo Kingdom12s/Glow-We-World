@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Glow We World - Registration</title>
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, #d1fae5, #10b981);
+      margin: 0;
+      padding: 0;
+      color: #064e3b;
+    }
+    header {
+      background: #047857;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      font-size: 1.8rem;
+      font-weight: 600;
+    }
+    form {
+      max-width: 700px;
+      background: white;
+      margin: 40px auto;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      color: #047857;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: 500;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+    .checkbox {
+      display: flex;
+      align-items: center;
+      margin-top: 15px;
+    }
+    .checkbox input {
+      margin-right: 8px;
+      transform: scale(1.2);
+    }
+    .declaration {
+      background: #f0fdf4;
+      padding: 15px;
+      border-left: 5px solid #10b981;
+      border-radius: 12px;
+      margin-top: 25px;
+    }
+    .declaration input {
+      margin-top: 10px;
+      border: 1px solid #a7f3d0;
+      border-radius: 6px;
+      padding: 8px;
+      width: 100%;
+    }
+    button {
+      display: block;
+      width: 100%;
+      background: #10b981;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      margin-top: 25px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background: #059669;
+    }
+  </style>
+</head>
+<body>
+
+<header>🌿 Glow We World Registration 🌿</header>
+
+<form id="registrationForm" action="https://formspree.io/f/xwprzzql" method="POST">
+  <h2>Member Registration Form</h2>
+
+  <label>First Name</label>
+  <input type="text" name="first_name" required>
+
+  <label>Middle Name</label>
+  <input type="text" name="middle_name">
+
+  <label>Last Name</label>
+  <input type="text" name="last_name" required>
+
+  <label>Phone Number</label>
+  <input type="tel" name="phone" required>
+
+  <label>WhatsApp Number</label>
+  <input type="tel" name="whatsapp" required>
+
+  <label>Email Address</label>
+  <input type="email" name="email" required>
+
+  <label>Residential Address</label>
+  <textarea name="address" rows="2" required></textarea>
+
+  <label>NIN (National Identification Number)</label>
+  <input type="text" name="nin" maxlength="11" pattern="\\d{11}" placeholder="Enter 11-digit NIN" required>
+
+  <label>Select Package</label>
+  <select name="package" required>
+    <option value="">Select Package</option>
+    <option>Daily Savings (₦200)</option>
+    <option>Daily Savings (₦500)</option>
+    <option>Daily Savings (₦1,000)</option>
+    <option>Daily Ajor (₦250)</option>
+    <option>Daily Ajor (₦700)</option>
+    <option>Daily Ajor (₦1,100)</option>
+    <option>Ajor Contribution (₦6,000)</option>
+  </select>
+
+  <div class="checkbox">
+    <input type="checkbox" id="terms" required>
+    <label for="terms">I confirm that the above information provided is correct and I agree to the terms and conditions.</label>
+  </div>
+
+  <div class="declaration">
+    <p><strong>Declaration:</strong> I hereby declare that the information provided above is true and accurate to the best of my knowledge.</p>
+    <label>Enter Full Name for Declaration</label>
+    <input type="text" name="declaration_name" placeholder="Type your full name here" required>
+  </div>
+
+  <button type="submit">Proceed to Registration</button>
+</form>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.querySelector("#registrationForm");
+  const submitBtn = form.querySelector("button[type='submit']");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Submitting...";
+
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+
+    // Save to localStorage for dashboard
+    localStorage.setItem("glowUser", JSON.stringify({
+      first_name: data.first_name,
+      middle_name: data.middle_name,
+      last_name: data.last_name,
+      phone: data.phone,
+      email: data.email,
+      whatsapp: data.whatsapp,
+      address: data.address,
+      nin: data.nin,
+    }));
+
+    localStorage.setItem("glowPackages", JSON.stringify([{ name: data.package, paid: false }]));
+
+    // Send to Formspree
+    fetch(form.action, { method: "POST", body: formData });
+
+    // Send to Google Sheet
+    const googleScriptURL = "https://script.google.com/macros/s/AKfycbzNoS-D9VQxvWHxkV22nDz5YunOCxK12MjskyFOB3r-U7pPbJJBB_2RyARp6y1zhQN8/exec";
+    try {
+      await fetch(googleScriptURL, {
+        method: "POST",
+        body: new URLSearchParams(data),
+      });
+
+      // Success toast
+      const toast = document.createElement("div");
+      toast.textContent = "Registration successful! Redirecting...";
+      toast.style.cssText = "position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#047857;color:white;padding:12px 20px;border-radius:8px;box-shadow:0 4px 10px rgba(0,0,0,0.2);z-index:1000;font-size:1rem;";
+      document.body.appendChild(toast);
+
+      setTimeout(() => {
+        toast.remove();
+        window.location.href = "stdashboard.html";
+      }, 1500);
+
+    } catch (err) {
+      alert("Error sending to Google Sheet. Please try again.");
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Proceed to Registration";
+    }
+  });
+});
+</script>
+
+</body>
+</html>
