@@ -1,168 +1,158 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Glow We World - Registration</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Glow We World Registration</title>
   <style>
     body {
       font-family: "Poppins", sans-serif;
-      background: linear-gradient(135deg, #d1fae5, #10b981);
+      background-color: #e8f5e9;
       margin: 0;
       padding: 0;
-      color: #064e3b;
     }
-    header {
-      background: #047857;
-      color: white;
-      text-align: center;
-      padding: 15px;
-      font-size: 1.8rem;
-      font-weight: 600;
-    }
+
     .container {
-      max-width: 900px;
+      max-width: 600px;
       background: white;
-      margin: 40px auto;
       padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0, 128, 0, 0.2);
+      margin: 40px auto;
     }
-    label { font-weight: 600; display: block; margin-top: 12px; }
-    input, select, textarea {
+
+    h2 {
+      text-align: center;
+      color: #006400;
+    }
+
+    label {
+      font-weight: 600;
+      display: block;
+      margin-top: 15px;
+      color: #333;
+    }
+
+    input, select {
       width: 100%;
       padding: 10px;
+      margin-top: 5px;
       border-radius: 8px;
       border: 1px solid #ccc;
-      margin-top: 6px;
-      font-size: 1rem;
+      font-size: 14px;
     }
-    .btn {
-      background: #10b981;
+
+    button {
+      background-color: #006400;
       color: white;
-      padding: 10px 20px;
       border: none;
+      padding: 12px 20px;
       border-radius: 8px;
-      margin-top: 20px;
       cursor: pointer;
-      transition: background 0.3s;
-      font-size: 1rem;
-    }
-    .btn:hover { background: #059669; }
-    .declaration-box {
-      border: 1px solid #a7f3d0;
-      background: #f0fdf4;
-      padding: 15px;
-      border-radius: 8px;
+      font-size: 16px;
+      width: 100%;
       margin-top: 20px;
     }
-    .declaration-box label {
+
+    button:hover {
+      background-color: #008000;
+    }
+
+    .declaration {
       display: flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: 500;
+      align-items: flex-start;
+      margin-top: 15px;
+      background: #f3fdf5;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #b2dfdb;
+    }
+
+    .declaration input[type="checkbox"] {
+      margin-right: 10px;
+      margin-top: 5px;
+    }
+
+    .declaration label {
+      font-size: 14px;
+      color: #333;
     }
   </style>
 </head>
 <body>
+  <div class="container">
+    <h2>Glow We World Registration</h2>
+    <form id="registrationForm">
+      <label>First Name</label>
+      <input type="text" name="firstName" required />
 
-<header>🌿 Glow We World - Registration 🌿</header>
+      <label>Middle Name</label>
+      <input type="text" name="middleName" />
 
-<div class="container">
-  <form id="registrationForm">
-    <h2>Member Registration</h2>
+      <label>Last Name</label>
+      <input type="text" name="lastName" required />
 
-    <label>First Name:</label>
-    <input type="text" id="first_name" name="first_name" required>
+      <label>Email</label>
+      <input type="email" name="email" required />
 
-    <label>Middle Name:</label>
-    <input type="text" id="middle_name" name="middle_name">
+      <label>Phone</label>
+      <input type="tel" name="phone" required />
 
-    <label>Last Name:</label>
-    <input type="text" id="last_name" name="last_name" required>
+      <label>WhatsApp</label>
+      <input type="tel" name="whatsapp" required />
 
-    <label>Email:</label>
-    <input type="email" id="email" name="email" required>
+      <label>Address</label>
+      <input type="text" name="address" required />
 
-    <label>Phone Number:</label>
-    <input type="tel" id="phone" name="phone" required>
+      <label>NIN</label>
+      <input type="text" name="nin" pattern="\\d{8,11}" title="Enter 8 to 11 digits" required />
 
-    <label>WhatsApp Number:</label>
-    <input type="tel" id="whatsapp" name="whatsapp">
+      <label>Gender</label>
+      <select name="gender" required>
+        <option value="">Select Gender</option>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+      </select>
 
-    <label>Address:</label>
-    <textarea id="address" name="address" required></textarea>
+      <label>Package</label>
+      <select name="package" required>
+        <option value="">Select a Package</option>
+        <option value="Daily Savings (₦200)">Daily Savings (₦200)</option>
+        <option value="Daily Savings (₦500)">Daily Savings (₦500)</option>
+        <option value="Daily Savings (₦1,000)">Daily Savings (₦1,000)</option>
+        <option value="Daily Ajor (₦1,100)">Daily Ajor (₦1,100)</option>
+      </select>
 
-    <label>NIN:</label>
-    <!-- ✅ Fixed format issue -->
-    <input type="text" id="nin" name="nin" maxlength="11" minlength="8" inputmode="numeric" placeholder="Enter NIN (8–11 digits)" required>
+      <div class="declaration">
+        <input type="checkbox" required />
+        <label>I declare that all information provided above is true and correct to the best of my knowledge.</label>
+      </div>
 
-    <label>Select Package:</label>
-    <select id="package" name="package" required>
-      <option value="">Select Package</option>
-      <option>Daily Savings (₦200)</option>
-      <option>Daily Savings (₦500)</option>
-      <option>Daily Savings (₦1,000)</option>
-      <option>Daily Ajor (₦250)</option>
-      <option>Daily Ajor (₦700)</option>
-      <option>Daily Ajor (₦1,100)</option>
-      <option>Ajor Contribution (₦6,000)</option>
-    </select>
+      <button type="submit">Submit</button>
+    </form>
+  </div>
 
-    <div class="declaration-box">
-      <label>
-        <input type="checkbox" id="declaration" required>
-        I hereby declare that all information provided above is true and correct.
-      </label>
-    </div>
+  <script>
+    document.getElementById("registrationForm").addEventListener("submit", function (event) {
+      event.preventDefault();
 
-    <button type="submit" class="btn">Submit</button>
-  </form>
-</div>
+      const form = event.target;
+      const formData = new FormData(form);
+      const scriptURL = "https://script.google.com/macros/s/AKfycbzNoS-D9VQxvWHxkV22nDz5YunOCxK12MjskyFOB3r-U7pPbJJBB_2RyARp6y1zhQN8/exec";
 
-<script>
-const form = document.getElementById("registrationForm");
-
-form.addEventListener("submit", async (e) => {
-  e.preventDefault();
-
-  const formData = new FormData(form);
-  const data = Object.fromEntries(formData.entries());
-
-  // ✅ Save to local storage
-  localStorage.setItem("glowUser", JSON.stringify(data));
-  localStorage.setItem("glowPackages", JSON.stringify([{ name: data.package, paid: false, date: new Date().toISOString() }]));
-
-  // ✅ Send to Formspree
-  fetch("https://formspree.io/f/maygawyn", {
-    method: "POST",
-    headers: { "Accept": "application/json" },
-    body: new FormData(form),
-  });
-
-  // ✅ Send to Google Sheet (use form-encoded body instead of JSON)
-  const googleScriptURL = "https://script.google.com/macros/s/AKfycbwQ79sQfHSuqXenw3aZWTahDGl42wd5y-IuGL3TF4WzNEtFgSN2xqe2nHmUdh-aeTmx/exec";
-  
-  const urlEncodedData = new URLSearchParams();
-  for (const [key, value] of formData.entries()) {
-    urlEncodedData.append(key, value);
-  }
-
-  fetch(googleScriptURL, {
-    method: "POST",
-    mode: "no-cors",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: urlEncodedData.toString()
-  });
-
-  // ✅ Auto redirect
-  setTimeout(() => {
-    window.location.href = "stdashboard.html";
-  }, 1500);
-});
-</script>
-
+      fetch(scriptURL, { method: "POST", body: formData })
+        .then(response => response.json())
+        .then(data => {
+          console.log("Success:", data);
+          // Automatically show message and redirect
+          alert("Welcome to Glow We World!");
+          window.location.href = "stdashboard.html";
+        })
+        .catch(error => {
+          console.error("Error:", error);
+          alert("There was a problem submitting your form. Please try again.");
+        });
+    });
+  </script>
 </body>
 </html>
-
-
