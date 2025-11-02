@@ -94,7 +94,7 @@
     <textarea id="address" name="address" required></textarea>
 
     <label>NIN:</label>
-    <!-- ✅ Fixed NIN input -->
+    <!-- ✅ Fixed format issue -->
     <input type="text" id="nin" name="nin" maxlength="11" minlength="8" inputmode="numeric" placeholder="Enter NIN (8–11 digits)" required>
 
     <label>Select Package:</label>
@@ -129,6 +129,7 @@ form.addEventListener("submit", async (e) => {
   const formData = new FormData(form);
   const data = Object.fromEntries(formData.entries());
 
+  // ✅ Save to local storage
   localStorage.setItem("glowUser", JSON.stringify(data));
   localStorage.setItem("glowPackages", JSON.stringify([{ name: data.package, paid: false, date: new Date().toISOString() }]));
 
@@ -139,15 +140,22 @@ form.addEventListener("submit", async (e) => {
     body: new FormData(form),
   });
 
-  // ✅ Send to Google Sheet
+  // ✅ Send to Google Sheet (use form-encoded body instead of JSON)
   const googleScriptURL = "https://script.google.com/macros/s/AKfycbzNoS-D9VQxvWHxkV22nDz5YunOCxK12MjskyFOB3r-U7pPbJJBB_2RyARp6y1zhQN8/exec";
+  
+  const urlEncodedData = new URLSearchParams();
+  for (const [key, value] of formData.entries()) {
+    urlEncodedData.append(key, value);
+  }
+
   fetch(googleScriptURL, {
     method: "POST",
     mode: "no-cors",
-    body: JSON.stringify(data)
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: urlEncodedData.toString()
   });
 
-  // ✅ Auto redirect after short loading delay
+  // ✅ Auto redirect
   setTimeout(() => {
     window.location.href = "stdashboard.html";
   }, 1500);
